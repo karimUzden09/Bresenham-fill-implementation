@@ -6,31 +6,31 @@
 CV_test_GUI::CV_test_GUI(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this); // запускаем основное окно
-	set_enable_disable(false); // когда окно в первый раз запускается все виджеты кроме кнопки открыть изоброжение не активны
+	ui.setupUi(this); // Р·Р°РїСѓСЃРєР°РµРј РѕСЃРЅРѕРІРЅРѕРµ РѕРєРЅРѕ
+	set_enable_disable(false); // РєРѕРіРґР° РѕРєРЅРѕ РІ РїРµСЂРІС‹Р№ СЂР°Р· Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РІСЃРµ РІРёРґР¶РµС‚С‹ РєСЂРѕРјРµ РєРЅРѕРїРєРё РѕС‚РєСЂС‹С‚СЊ РёР·РѕР±СЂРѕР¶РµРЅРёРµ РЅРµ Р°РєС‚РёРІРЅС‹
 	set_enable_disable_save_widgets(false);
 }
 
 
 void CV_test_GUI::on_open_imge_button_clicked()
 {
-	fileName = QFileDialog::getOpenFileName(0, "Open Image", QString(), "BMP File(*.bmp)"); // Открытия диологового окна для загрузки изоброжения
-	if (!fileName.isEmpty()) // если мы выбрали изоброжение 
+	fileName = QFileDialog::getOpenFileName(0, "Open Image", QString(), "BMP File(*.bmp)"); // РћС‚РєСЂС‹С‚РёСЏ РґРёРѕР»РѕРіРѕРІРѕРіРѕ РѕРєРЅР° РґР»СЏ Р·Р°РіСЂСѓР·РєРё РёР·РѕР±СЂРѕР¶РµРЅРёСЏ
+	if (!fileName.isEmpty()) // РµСЃР»Рё РјС‹ РІС‹Р±СЂР°Р»Рё РёР·РѕР±СЂРѕР¶РµРЅРёРµ 
 	{
-		image = QImage(fileName); // инициализируем поле image нашим выбранным изоброжением
-		set_enable_disable(true); // все виджеты кроме кнопки сохронить делаем активными делаем октивными
-		std::filesystem::path std_path{fileName.toStdWString()}; //используется библиотека filesystem из C++17 для того чтобы корректно передать путь до файла в функцию imread 
-		cv_image = cv::imread(std_path.string()); // ницилизируем поле cv_image в котором хранится нашим выбранным изоброжением
-		cv::cvtColor(cv_image, cv_image_grey_version, cv::COLOR_BGR2GRAY); // иницилизируем поле  cv_image_grey_version в котором будет хранится полутоновое версия изоброжения
-		columns = cv_image.cols; //инициализируем поле columns  в котором хранится  количество строк в изоброжении
-		rows = cv_image.rows; // инициализируем поле rows  в котором хранится  количество строк в изоброжении
-		filler.set_rows_columns(rows, columns); // даем информацию об количестве столбцов и строк объекту класса Filler
-		ui.x_point_spinBox->setMaximum(rows); // в виджете x_point_spinBox максимально допустимое значение будет равно значению rows
-		ui.y_point_spinBox->setMaximum(columns); // в виджете y_point_spinBox максимально допустимое значение будет равно значению columns
-		ui.x_size_lable->setText(QString::number(columns)); //отоброжение в x_size_lable клоичество строк в изоброжении
-		ui.y_size_lable->setText(QString::number(rows)); //отоброжение в y_size_lable клоичество столбцов в изоброжении
-		ui.Drow_palce->resize(image.width(), image.height()); // lable Подгоняется под размер изоброжения
-		ui.Drow_palce->setPixmap(QPixmap::fromImage(image)); // отоброжется изоброжение в окне с помощю виджет label
+		image = QImage(fileName); // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРѕР»Рµ image РЅР°С€РёРј РІС‹Р±СЂР°РЅРЅС‹Рј РёР·РѕР±СЂРѕР¶РµРЅРёРµРј
+		set_enable_disable(true); // РІСЃРµ РІРёРґР¶РµС‚С‹ РєСЂРѕРјРµ РєРЅРѕРїРєРё СЃРѕС…СЂРѕРЅРёС‚СЊ РґРµР»Р°РµРј Р°РєС‚РёРІРЅС‹РјРё РґРµР»Р°РµРј РѕРєС‚РёРІРЅС‹РјРё
+		std::filesystem::path std_path{fileName.toStdWString()}; //РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р±РёР±Р»РёРѕС‚РµРєР° filesystem РёР· C++17 РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РєРѕСЂСЂРµРєС‚РЅРѕ РїРµСЂРµРґР°С‚СЊ РїСѓС‚СЊ РґРѕ С„Р°Р№Р»Р° РІ С„СѓРЅРєС†РёСЋ imread 
+		cv_image = cv::imread(std_path.string()); // РЅРёС†РёР»РёР·РёСЂСѓРµРј РїРѕР»Рµ cv_image РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅРёС‚СЃСЏ РЅР°С€РёРј РІС‹Р±СЂР°РЅРЅС‹Рј РёР·РѕР±СЂРѕР¶РµРЅРёРµРј
+		cv::cvtColor(cv_image, cv_image_grey_version, cv::COLOR_BGR2GRAY); // РёРЅРёС†РёР»РёР·РёСЂСѓРµРј РїРѕР»Рµ  cv_image_grey_version РІ РєРѕС‚РѕСЂРѕРј Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЃСЏ РїРѕР»СѓС‚РѕРЅРѕРІРѕРµ РІРµСЂСЃРёСЏ РёР·РѕР±СЂРѕР¶РµРЅРёСЏ
+		columns = cv_image.cols; //РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРѕР»Рµ columns  РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅРёС‚СЃСЏ  РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ РёР·РѕР±СЂРѕР¶РµРЅРёРё
+		rows = cv_image.rows; // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРѕР»Рµ rows  РІ РєРѕС‚РѕСЂРѕРј С…СЂР°РЅРёС‚СЃСЏ  РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ РёР·РѕР±СЂРѕР¶РµРЅРёРё
+		filler.set_rows_columns(rows, columns); // РґР°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± РєРѕР»РёС‡РµСЃС‚РІРµ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє РѕР±СЉРµРєС‚Сѓ РєР»Р°СЃСЃР° Filler
+		ui.x_point_spinBox->setMaximum(rows); // РІ РІРёРґР¶РµС‚Рµ x_point_spinBox РјР°РєСЃРёРјР°Р»СЊРЅРѕ РґРѕРїСѓСЃС‚РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ Р±СѓРґРµС‚ СЂР°РІРЅРѕ Р·РЅР°С‡РµРЅРёСЋ rows
+		ui.y_point_spinBox->setMaximum(columns); // РІ РІРёРґР¶РµС‚Рµ y_point_spinBox РјР°РєСЃРёРјР°Р»СЊРЅРѕ РґРѕРїСѓСЃС‚РёРјРѕРµ Р·РЅР°С‡РµРЅРёРµ Р±СѓРґРµС‚ СЂР°РІРЅРѕ Р·РЅР°С‡РµРЅРёСЋ columns
+		ui.x_size_lable->setText(QString::number(columns)); //РѕС‚РѕР±СЂРѕР¶РµРЅРёРµ РІ x_size_lable РєР»РѕРёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ РёР·РѕР±СЂРѕР¶РµРЅРёРё
+		ui.y_size_lable->setText(QString::number(rows)); //РѕС‚РѕР±СЂРѕР¶РµРЅРёРµ РІ y_size_lable РєР»РѕРёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ РІ РёР·РѕР±СЂРѕР¶РµРЅРёРё
+		ui.Drow_palce->resize(image.width(), image.height()); // lable РџРѕРґРіРѕРЅСЏРµС‚СЃСЏ РїРѕРґ СЂР°Р·РјРµСЂ РёР·РѕР±СЂРѕР¶РµРЅРёСЏ
+		ui.Drow_palce->setPixmap(QPixmap::fromImage(image)); // РѕС‚РѕР±СЂРѕР¶РµС‚СЃСЏ РёР·РѕР±СЂРѕР¶РµРЅРёРµ РІ РѕРєРЅРµ СЃ РїРѕРјРѕС‰СЋ РІРёРґР¶РµС‚ label
 
 	}
 
@@ -38,8 +38,8 @@ void CV_test_GUI::on_open_imge_button_clicked()
 
 /*
 
-В функиции все почти тоже самое что в функции fill_image в которая обявленна в зоголовочном файле Filler.hpp
-и релизованна в файле Fillel.cpp за исключением пару вещей которые рассматриаются ниже
+Р’ С„СѓРЅРєРёС†РёРё РІСЃРµ РїРѕС‡С‚Рё С‚РѕР¶Рµ СЃР°РјРѕРµ С‡С‚Рѕ РІ С„СѓРЅРєС†РёРё fill_image РІ РєРѕС‚РѕСЂР°СЏ РѕР±СЏРІР»РµРЅРЅР° РІ Р·РѕРіРѕР»РѕРІРѕС‡РЅРѕРј С„Р°Р№Р»Рµ Filler.hpp
+Рё СЂРµР»РёР·РѕРІР°РЅРЅР° РІ С„Р°Р№Р»Рµ Fillel.cpp Р·Р° РёСЃРєР»СЋС‡РµРЅРёРµРј РїР°СЂСѓ РІРµС‰РµР№ РєРѕС‚РѕСЂС‹Рµ СЂР°СЃСЃРјР°С‚СЂРёР°СЋС‚СЃСЏ РЅРёР¶Рµ
 
 */
 
@@ -97,20 +97,20 @@ void CV_test_GUI::fill_image_interactive(cv::Mat cv_image_arg, const Pixel& pixe
 			}
 		}
 
-		cv_saved_image = cv::Mat(rows, columns, image_type, image_data); // обновляем output_image в соответсвии с изменениям данных изоброжения в результате приминения аллгоритма заливки
-		cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);  // конвертируем тип изоброжения в COLOR_BGR2RGB для того чтобы совместить с QImage
+		cv_saved_image = cv::Mat(rows, columns, image_type, image_data); // РѕР±РЅРѕРІР»СЏРµРј output_image РІ СЃРѕРѕС‚РІРµС‚СЃРІРёРё СЃ РёР·РјРµРЅРµРЅРёСЏРј РґР°РЅРЅС‹С… РёР·РѕР±СЂРѕР¶РµРЅРёСЏ РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РїСЂРёРјРёРЅРµРЅРёСЏ Р°Р»Р»РіРѕСЂРёС‚РјР° Р·Р°Р»РёРІРєРё
+		cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);  // РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј С‚РёРї РёР·РѕР±СЂРѕР¶РµРЅРёСЏ РІ COLOR_BGR2RGB РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ СЃРѕРІРјРµСЃС‚РёС‚СЊ СЃ QImage
 		buff_image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols,
-			cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888); // из объекта cv::Mat переводим в тип QImage для того чтобы выводить на изменения изоброажение на экране Qt
-		ui.Drow_palce->setPixmap(QPixmap::fromImage(buff_image)); // Отрисовываем изоброжение в окне qt точнее в  lable
-		QThread::msleep(interctive_speed); // Приостонавливаем выполнение текущего потока чем выше значение переменной  interctive_speed тем медленей будет происходить отрисовка
-		QCoreApplication::processEvents(); // Обновляем все виджеты на окне
+			cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888); // РёР· РѕР±СЉРµРєС‚Р° cv::Mat РїРµСЂРµРІРѕРґРёРј РІ С‚РёРї QImage РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РІС‹РІРѕРґРёС‚СЊ РЅР° РёР·РјРµРЅРµРЅРёСЏ РёР·РѕР±СЂРѕР°Р¶РµРЅРёРµ РЅР° СЌРєСЂР°РЅРµ Qt
+		ui.Drow_palce->setPixmap(QPixmap::fromImage(buff_image)); // РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РёР·РѕР±СЂРѕР¶РµРЅРёРµ РІ РѕРєРЅРµ qt С‚РѕС‡РЅРµРµ РІ  lable
+		QThread::msleep(interctive_speed); // РџСЂРёРѕСЃС‚РѕРЅР°РІР»РёРІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР° С‡РµРј РІС‹С€Рµ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№  interctive_speed С‚РµРј РјРµРґР»РµРЅРµР№ Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РѕС‚СЂРёСЃРѕРІРєР°
+		QCoreApplication::processEvents(); // РћР±РЅРѕРІР»СЏРµРј РІСЃРµ РІРёРґР¶РµС‚С‹ РЅР° РѕРєРЅРµ
 	}
 }
 
 /*
 
-В функиции все почти тоже самое что в функции fill_image_rec_interactive_version в которая обявленна в зоголовочном файле Filler.hpp
-и релизованна в файле Fillel.cpp за исключением пару вещей которые рассматриаются ниже
+Р’ С„СѓРЅРєРёС†РёРё РІСЃРµ РїРѕС‡С‚Рё С‚РѕР¶Рµ СЃР°РјРѕРµ С‡С‚Рѕ РІ С„СѓРЅРєС†РёРё fill_image_rec_interactive_version РІ РєРѕС‚РѕСЂР°СЏ РѕР±СЏРІР»РµРЅРЅР° РІ Р·РѕРіРѕР»РѕРІРѕС‡РЅРѕРј С„Р°Р№Р»Рµ Filler.hpp
+Рё СЂРµР»РёР·РѕРІР°РЅРЅР° РІ С„Р°Р№Р»Рµ Fillel.cpp Р·Р° РёСЃРєР»СЋС‡РµРЅРёРµРј РїР°СЂСѓ РІРµС‰РµР№ РєРѕС‚РѕСЂС‹Рµ СЂР°СЃСЃРјР°С‚СЂРёР°СЋС‚СЃСЏ РЅРёР¶Рµ
 
 */
 void CV_test_GUI::fill_image_rec_interactive_version
@@ -133,13 +133,13 @@ void CV_test_GUI::fill_image_rec_interactive_version
 	
 	image_data[x + y * rows] = filler_color;
 
-	cv_saved_image = cv::Mat(rows, columns, image_type, image_data);  // обновляем output_image в соответсвии с изменениями данных изоброжения в результате приминения аллгоритма заливки
-	cv::cvtColor(cv_image_arg, cv_saved_image, cv::COLOR_BGR2RGB);	// конвертируем тип изоброжения в COLOR_BGR2RGB для того чтобы совместить с QImage
+	cv_saved_image = cv::Mat(rows, columns, image_type, image_data);  // РѕР±РЅРѕРІР»СЏРµРј output_image РІ СЃРѕРѕС‚РІРµС‚СЃРІРёРё СЃ РёР·РјРµРЅРµРЅРёСЏРјРё РґР°РЅРЅС‹С… РёР·РѕР±СЂРѕР¶РµРЅРёСЏ РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РїСЂРёРјРёРЅРµРЅРёСЏ Р°Р»Р»РіРѕСЂРёС‚РјР° Р·Р°Р»РёРІРєРё
+	cv::cvtColor(cv_image_arg, cv_saved_image, cv::COLOR_BGR2RGB);	// РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј С‚РёРї РёР·РѕР±СЂРѕР¶РµРЅРёСЏ РІ COLOR_BGR2RGB РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ СЃРѕРІРјРµСЃС‚РёС‚СЊ СЃ QImage
 	buff_image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols,
-		cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888); // конвертируем тип изоброжения в COLOR_BGR2RGB для того чтобы совместить с QImage
-	ui.Drow_palce->setPixmap(QPixmap::fromImage(buff_image)); // Отрисовываем изоброжение в окне qt точнее в  lable
-	QThread::msleep(interctive_speed); // Приостонавливаем выполнение текущего потока чем выше значение переменной  interctive_speed тем медленей будет происходить отрисовка
-	QCoreApplication::processEvents(); // Обновляем все виджеты на окне
+		cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888); // РєРѕРЅРІРµСЂС‚РёСЂСѓРµРј С‚РёРї РёР·РѕР±СЂРѕР¶РµРЅРёСЏ РІ COLOR_BGR2RGB РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ СЃРѕРІРјРµСЃС‚РёС‚СЊ СЃ QImage
+	ui.Drow_palce->setPixmap(QPixmap::fromImage(buff_image)); // РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РёР·РѕР±СЂРѕР¶РµРЅРёРµ РІ РѕРєРЅРµ qt С‚РѕС‡РЅРµРµ РІ  lable
+	QThread::msleep(interctive_speed); // РџСЂРёРѕСЃС‚РѕРЅР°РІР»РёРІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ С‚РµРєСѓС‰РµРіРѕ РїРѕС‚РѕРєР° С‡РµРј РІС‹С€Рµ Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№  interctive_speed С‚РµРј РјРµРґР»РµРЅРµР№ Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РѕС‚СЂРёСЃРѕРІРєР°
+	QCoreApplication::processEvents(); // РћР±РЅРѕРІР»СЏРµРј РІСЃРµ РІРёРґР¶РµС‚С‹ РЅР° РѕРєРЅРµ
 	if (x + 1 < rows)
 	{
 		fill_image_rec_interactive_version(cv_image_arg, x + 1, y, pixel_brightness, filler_color);
@@ -160,8 +160,8 @@ void CV_test_GUI::fill_image_rec_interactive_version
 }
 
 /*
-		Функция set_enable_disable(bool state) в которой некоторые виджеты переводятся в активный
-		режим если state==true и в не активный если state == false
+		Р¤СѓРЅРєС†РёСЏ set_enable_disable(bool state) РІ РєРѕС‚РѕСЂРѕР№ РЅРµРєРѕС‚РѕСЂС‹Рµ РІРёРґР¶РµС‚С‹ РїРµСЂРµРІРѕРґСЏС‚СЃСЏ РІ Р°РєС‚РёРІРЅС‹Р№
+		СЂРµР¶РёРј РµСЃР»Рё state==true Рё РІ РЅРµ Р°РєС‚РёРІРЅС‹Р№ РµСЃР»Рё state == false
 */
 void CV_test_GUI::set_enable_disable(bool state) noexcept
 {
@@ -178,8 +178,8 @@ void CV_test_GUI::set_enable_disable(bool state) noexcept
 	
 }
 /*
-		Функция set_enable_disable_save_widgets(bool state) в которой виджеты для сохронения изображения переводятся в активный
-		режим если state==true и в не активный если state == false
+		Р¤СѓРЅРєС†РёСЏ set_enable_disable_save_widgets(bool state) РІ РєРѕС‚РѕСЂРѕР№ РІРёРґР¶РµС‚С‹ РґР»СЏ СЃРѕС…СЂРѕРЅРµРЅРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РїРµСЂРµРІРѕРґСЏС‚СЃСЏ РІ Р°РєС‚РёРІРЅС‹Р№
+		СЂРµР¶РёРј РµСЃР»Рё state==true Рё РІ РЅРµ Р°РєС‚РёРІРЅС‹Р№ РµСЃР»Рё state == false
 */
 void CV_test_GUI::set_enable_disable_save_widgets(bool state) noexcept
 {
@@ -190,77 +190,77 @@ void CV_test_GUI::set_enable_disable_save_widgets(bool state) noexcept
 
 void CV_test_GUI::on_to_fill_clicked()
 {
-	pos.x = ui.x_point_spinBox->value(); // считываем число которое укзанна в виджете ui.x_point_spinBox в поле X обекта Структуры Pxiel
-	pos.y = ui.y_point_spinBox->value(); // считываем число которое укзанна в виджете ui.y_point_spinBox в поле Y обекта Структуры Pxiel
-	filler_color = ui.filler_color_spinBox->value(); // считываем число которое укзанна в виджете ui.filler_color_spinBox в поле filler_color
-	pixel_brightness = ui.pixel_brightness_spinBox->value(); // считываем число которое укзанна в виджете ui.pixel_brightness_spinBox в поле pixel_brightness
-	interctive_speed = ui.interactive_speed_spinBox->value(); // Считываем число которое указана в виджете interactive_speed_spinBox где задется скорость выполнения интерактивной версий фукеции заливки чем выше щначение тем меделенней она будет выполнятся
-	image_data = cv_image_grey_version.data; // В поле image_data буде хранится указатель на данные изоброжения
-	image_type = cv_image_grey_version.type(); // В поле image_type будет хранится тип изображения
-	filler.set_rows_columns(rows, columns);   // отпровляем данные ширины и высоты изобоажения для объекта класса Filler 
+	pos.x = ui.x_point_spinBox->value(); // СЃС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Рѕ РєРѕС‚РѕСЂРѕРµ СѓРєР·Р°РЅРЅР° РІ РІРёРґР¶РµС‚Рµ ui.x_point_spinBox РІ РїРѕР»Рµ X РѕР±РµРєС‚Р° РЎС‚СЂСѓРєС‚СѓСЂС‹ Pxiel
+	pos.y = ui.y_point_spinBox->value(); // СЃС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Рѕ РєРѕС‚РѕСЂРѕРµ СѓРєР·Р°РЅРЅР° РІ РІРёРґР¶РµС‚Рµ ui.y_point_spinBox РІ РїРѕР»Рµ Y РѕР±РµРєС‚Р° РЎС‚СЂСѓРєС‚СѓСЂС‹ Pxiel
+	filler_color = ui.filler_color_spinBox->value(); // СЃС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Рѕ РєРѕС‚РѕСЂРѕРµ СѓРєР·Р°РЅРЅР° РІ РІРёРґР¶РµС‚Рµ ui.filler_color_spinBox РІ РїРѕР»Рµ filler_color
+	pixel_brightness = ui.pixel_brightness_spinBox->value(); // СЃС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Рѕ РєРѕС‚РѕСЂРѕРµ СѓРєР·Р°РЅРЅР° РІ РІРёРґР¶РµС‚Рµ ui.pixel_brightness_spinBox РІ РїРѕР»Рµ pixel_brightness
+	interctive_speed = ui.interactive_speed_spinBox->value(); // РЎС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Рѕ РєРѕС‚РѕСЂРѕРµ СѓРєР°Р·Р°РЅР° РІ РІРёРґР¶РµС‚Рµ interactive_speed_spinBox РіРґРµ Р·Р°РґРµС‚СЃСЏ СЃРєРѕСЂРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РёРЅС‚РµСЂР°РєС‚РёРІРЅРѕР№ РІРµСЂСЃРёР№ С„СѓРєРµС†РёРё Р·Р°Р»РёРІРєРё С‡РµРј РІС‹С€Рµ С‰РЅР°С‡РµРЅРёРµ С‚РµРј РјРµРґРµР»РµРЅРЅРµР№ РѕРЅР° Р±СѓРґРµС‚ РІС‹РїРѕР»РЅСЏС‚СЃСЏ
+	image_data = cv_image_grey_version.data; // Р’ РїРѕР»Рµ image_data Р±СѓРґРµ С…СЂР°РЅРёС‚СЃСЏ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РґР°РЅРЅС‹Рµ РёР·РѕР±СЂРѕР¶РµРЅРёСЏ
+	image_type = cv_image_grey_version.type(); // Р’ РїРѕР»Рµ image_type Р±СѓРґРµС‚ С…СЂР°РЅРёС‚СЃСЏ С‚РёРї РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+	filler.set_rows_columns(rows, columns);   // РѕС‚РїСЂРѕРІР»СЏРµРј РґР°РЅРЅС‹Рµ С€РёСЂРёРЅС‹ Рё РІС‹СЃРѕС‚С‹ РёР·РѕР±РѕР°Р¶РµРЅРёСЏ РґР»СЏ РѕР±СЉРµРєС‚Р° РєР»Р°СЃСЃР° Filler 
 
-	if (ui.recursive_radioButton->isChecked()) // если у нас выбран рекурсивный режим
+	if (ui.recursive_radioButton->isChecked()) // РµСЃР»Рё Сѓ РЅР°СЃ РІС‹Р±СЂР°РЅ СЂРµРєСѓСЂСЃРёРІРЅС‹Р№ СЂРµР¶РёРј
 	{
-		if (ui.interactiv_ver_checkBox->isChecked()) // если у нас выбран интерактивный режим
+		if (ui.interactiv_ver_checkBox->isChecked()) // РµСЃР»Рё Сѓ РЅР°СЃ РІС‹Р±СЂР°РЅ РёРЅС‚РµСЂР°РєС‚РёРІРЅС‹Р№ СЂРµР¶РёРј
 		{
-			fill_image_rec_interactive_version(cv_image_grey_version, pos.x, pos.y, pixel_brightness, filler_color); // выполняем интерактивную версию рекурсивной функции заливки
+			fill_image_rec_interactive_version(cv_image_grey_version, pos.x, pos.y, pixel_brightness, filler_color); // РІС‹РїРѕР»РЅСЏРµРј РёРЅС‚РµСЂР°РєС‚РёРІРЅСѓСЋ РІРµСЂСЃРёСЋ СЂРµРєСѓСЂСЃРёРІРЅРѕР№ С„СѓРЅРєС†РёРё Р·Р°Р»РёРІРєРё
 		}
 		else
 		{
 			
-			auto filled_data = filler.fill_image_rec_ver(image_data, pos.x, pos.y, pixel_brightness, filler_color);								// Вызыаем рекурсивную версию заливки
-			cv_saved_image = cv::Mat(rows, columns, cv_image_grey_version.type(), filled_data);													// В сохроняемой версии унас храниться изиененная версия изображения
-			cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);																	// Переводим цвет в cv::COLOR_BGR2RGB
-			image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols, cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888);	// из объекта cv::Mat переводим в тип QImage
-			ui.Drow_palce->setPixmap(QPixmap::fromImage(image));																				// Отрисовываем изоброжение в окне qt точнее в  lable
+			auto filled_data = filler.fill_image_rec_ver(image_data, pos.x, pos.y, pixel_brightness, filler_color);								// Р’С‹Р·С‹Р°РµРј СЂРµРєСѓСЂСЃРёРІРЅСѓСЋ РІРµСЂСЃРёСЋ Р·Р°Р»РёРІРєРё
+			cv_saved_image = cv::Mat(rows, columns, cv_image_grey_version.type(), filled_data);													// Р’ СЃРѕС…СЂРѕРЅСЏРµРјРѕР№ РІРµСЂСЃРёРё СѓРЅР°СЃ С…СЂР°РЅРёС‚СЊСЃСЏ РёР·РёРµРЅРµРЅРЅР°СЏ РІРµСЂСЃРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+			cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);																	// РџРµСЂРµРІРѕРґРёРј С†РІРµС‚ РІ cv::COLOR_BGR2RGB
+			image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols, cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888);	// РёР· РѕР±СЉРµРєС‚Р° cv::Mat РїРµСЂРµРІРѕРґРёРј РІ С‚РёРї QImage
+			ui.Drow_palce->setPixmap(QPixmap::fromImage(image));																				// РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РёР·РѕР±СЂРѕР¶РµРЅРёРµ РІ РѕРєРЅРµ qt С‚РѕС‡РЅРµРµ РІ  lable
 		}
 	}
-	if (ui.iterative_radioButton->isChecked()) // Если выбран итеративный режим
+	if (ui.iterative_radioButton->isChecked()) // Р•СЃР»Рё РІС‹Р±СЂР°РЅ РёС‚РµСЂР°С‚РёРІРЅС‹Р№ СЂРµР¶РёРј
 	{
-		if (ui.interactiv_ver_checkBox->isChecked()) // Если  интерактвный режим включен
+		if (ui.interactiv_ver_checkBox->isChecked()) // Р•СЃР»Рё  РёРЅС‚РµСЂР°РєС‚РІРЅС‹Р№ СЂРµР¶РёРј РІРєР»СЋС‡РµРЅ
 		{
-			fill_image_interactive(cv_image_grey_version, pos, pixel_brightness, filler_color); // Вызов интерактивной версий функций заливки
+			fill_image_interactive(cv_image_grey_version, pos, pixel_brightness, filler_color); // Р’С‹Р·РѕРІ РёРЅС‚РµСЂР°РєС‚РёРІРЅРѕР№ РІРµСЂСЃРёР№ С„СѓРЅРєС†РёР№ Р·Р°Р»РёРІРєРё
 		}
 		else
 		{
 			
-			auto filled_data = filler.fill_image(image_data, pos, pixel_brightness, filler_color);												// Вызыаем рекурсивную версию заливки
-			cv_saved_image = cv::Mat(rows, columns, cv_image_grey_version.type(), filled_data);													// В сохроняемой версии унас храниться изиененная версия изображения
-			cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);																	// Переводим цвет в cv::COLOR_BGR2RGB
-			image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols, cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888);	// из объекта cv::Mat переводим в тип QImage
-			ui.Drow_palce->setPixmap(QPixmap::fromImage(image));																				// Отрисовываем изоброжение в окне qt точнее в  lable
+			auto filled_data = filler.fill_image(image_data, pos, pixel_brightness, filler_color);												// Р’С‹Р·С‹Р°РµРј СЂРµРєСѓСЂСЃРёРІРЅСѓСЋ РІРµСЂСЃРёСЋ Р·Р°Р»РёРІРєРё
+			cv_saved_image = cv::Mat(rows, columns, cv_image_grey_version.type(), filled_data);													// Р’ СЃРѕС…СЂРѕРЅСЏРµРјРѕР№ РІРµСЂСЃРёРё СѓРЅР°СЃ С…СЂР°РЅРёС‚СЊСЃСЏ РёР·РёРµРЅРµРЅРЅР°СЏ РІРµСЂСЃРёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+			cv::cvtColor(cv_saved_image, cv_saved_image, cv::COLOR_BGR2RGB);																	// РџРµСЂРµРІРѕРґРёРј С†РІРµС‚ РІ cv::COLOR_BGR2RGB
+			image = QImage((uchar*)cv_saved_image.data, cv_saved_image.cols, cv_saved_image.rows, cv_saved_image.step, QImage::Format_RGB888);	// РёР· РѕР±СЉРµРєС‚Р° cv::Mat РїРµСЂРµРІРѕРґРёРј РІ С‚РёРї QImage
+			ui.Drow_palce->setPixmap(QPixmap::fromImage(image));																				// РћС‚СЂРёСЃРѕРІС‹РІР°РµРј РёР·РѕР±СЂРѕР¶РµРЅРёРµ РІ РѕРєРЅРµ qt С‚РѕС‡РЅРµРµ РІ  lable
 		}
 	}
-	set_enable_disable_save_widgets(true); // Делаем активным кнопки для сохронения файла
+	set_enable_disable_save_widgets(true); // Р”РµР»Р°РµРј Р°РєС‚РёРІРЅС‹Рј РєРЅРѕРїРєРё РґР»СЏ СЃРѕС…СЂРѕРЅРµРЅРёСЏ С„Р°Р№Р»Р°
 	
 }
 
 void CV_test_GUI::on_save_pushButton_clicked()
 {
-	auto saved_file_name = QFileDialog::getSaveFileName(0, "Save Image", QString(), "BMP File(*.bmp)"); // Открывается диалог сохроненеия файла
-	std::filesystem::path std_path{ saved_file_name.toStdWString() }; //используется библиотека filesystem из C++17 для того чтобы корректно передать путь сохронения файла в функцию imwrite 
-	cv::imwrite(std_path.string(), cv_saved_image); // Сохроняем изображение
+	auto saved_file_name = QFileDialog::getSaveFileName(0, "Save Image", QString(), "BMP File(*.bmp)"); // РћС‚РєСЂС‹РІР°РµС‚СЃСЏ РґРёР°Р»РѕРі СЃРѕС…СЂРѕРЅРµРЅРµРёСЏ С„Р°Р№Р»Р°
+	std::filesystem::path std_path{ saved_file_name.toStdWString() }; //РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ Р±РёР±Р»РёРѕС‚РµРєР° filesystem РёР· C++17 РґР»СЏ С‚РѕРіРѕ С‡С‚РѕР±С‹ РєРѕСЂСЂРµРєС‚РЅРѕ РїРµСЂРµРґР°С‚СЊ РїСѓС‚СЊ СЃРѕС…СЂРѕРЅРµРЅРёСЏ С„Р°Р№Р»Р° РІ С„СѓРЅРєС†РёСЋ imwrite 
+	cv::imwrite(std_path.string(), cv_saved_image); // РЎРѕС…СЂРѕРЅСЏРµРј РёР·РѕР±СЂР°Р¶РµРЅРёРµ
 }
 
 void CV_test_GUI::on_open_image_action_triggered()
 {
-	on_open_imge_button_clicked(); // Вызываем слот открытия изоброжение
+	on_open_imge_button_clicked(); // Р’С‹Р·С‹РІР°РµРј СЃР»РѕС‚ РѕС‚РєСЂС‹С‚РёСЏ РёР·РѕР±СЂРѕР¶РµРЅРёРµ
 }
 
 void CV_test_GUI::on_save_image_action_triggered()
 {
-	on_save_pushButton_clicked(); // Вызываем слот сохронееия изоброжение
+	on_save_pushButton_clicked(); // Р’С‹Р·С‹РІР°РµРј СЃР»РѕС‚ СЃРѕС…СЂРѕРЅРµРµРёСЏ РёР·РѕР±СЂРѕР¶РµРЅРёРµ
 }
 
 void CV_test_GUI::on_exit_action_triggered()
 {
-	QApplication::exit(); // Выходим из программы
+	QApplication::exit(); // Р’С‹С…РѕРґРёРј РёР· РїСЂРѕРіСЂР°РјРјС‹
 }
 
 void CV_test_GUI::on_about_action_triggered()
 {
 	QMessageBox msg;
-	std::wstring W_Title{ L"О программе" };
+	std::wstring W_Title{ L"Рћ РїСЂРѕРіСЂР°РјРјРµ" };
 
 	msg.setWindowTitle(QString::fromWCharArray(W_Title.c_str()));
 	auto majot =  QString::number(CV_TEST_VER_MAJOR);
